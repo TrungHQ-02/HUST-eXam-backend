@@ -1,6 +1,8 @@
 # HUST-eXam-backend
+
 #Hướng dẫn chạy dự án Express
-##Để chạy dự án, hãy làm theo các bước sau:
+
+#Để chạy dự án, hãy làm theo các bước sau:
 
 -Tải và cài đặt XAMPP từ trang web chính thức của xampp
 
@@ -16,7 +18,7 @@
 
 -Nếu thành công, terminal sẽ hiển thị thông báo "Our server is running on port 8001" và "Connection to database has been established successfully."
 ---
-###**LƯU Ý**:
+**LƯU Ý**:
 - File ENV sẽ để các biến môi trường, trong thực tế file ENV sẽ được giấu đi. Tuy nhiên, trong dự án nhà làm thì Trung chọn cách public file này lên
 - Các api sẽ được viết trong file web.js
 - Folder models để định nghĩa các models cho database
