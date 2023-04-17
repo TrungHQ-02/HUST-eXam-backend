@@ -33,7 +33,29 @@ let handleLogin = (id, user_password) => {
     resolve(data);
   });
 };
+let handleGetUserInfo = (id) => {
+  return new Promise(async (resolve, reject) => {
+    let data = {};
+    let user = await db.User.findOne({
+      where: {
+        id: id,
+      },
+      raw: true,
+    });
+
+    if (user) {
+      data.code = 0;
+      data.message = "OK";
+      data.user = user;
+    } else {
+      data.code = 2;
+      data.message = "Your account does not exist";
+    }
+    resolve(data);
+  });
+};
 
 module.exports = {
   handleLogin: handleLogin,
+  handleGetUserInfo: handleGetUserInfo,
 };
