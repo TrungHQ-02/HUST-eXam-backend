@@ -207,6 +207,7 @@ let handleGetUserInfo = (id) => {
     if (user) {
       data.code = 0;
       data.message = "OK";
+      delete user.user_password;
       data.user = user;
     } else {
       data.code = 2;

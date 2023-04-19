@@ -79,7 +79,7 @@ let handleUserSignup = async (req, res) => {
 // GET USER INFO
 let getUserInfo = async (req, res) => {
   let id = req.query.userId;
-  let requestedId = parseInt(req.query.id);
+  let requestedId = req.query.id;
   if (id !== requestedId) {
     return res.status(500).json({
       code: 3,
