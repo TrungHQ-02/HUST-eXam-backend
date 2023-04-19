@@ -143,8 +143,46 @@ let handleLoginViaEmail = (email, user_password) => {
   });
 };
 
-// GET USER INFO
+// createNewUSer
+let createNewUSer = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let checkExistEmail = await checkEmailExist(data.email);
+      if (checkExistEmail === true) {
+        resolve({
+          code: 2,
+          message: "Email has been used",
+        });
+      }
 
+      let checkExistUsername = await checkUserNameExist(data.user_name);
+      if (checkExistUsername === true) {
+        resolve({
+          code: 3,
+          message: "Username has been used",
+        });
+      } else {
+        // let user_password = await hashPassword(data.user_password);
+        let user_password = data.user_password;
+        await db.User.create({
+          email: data.email,
+          user_password: user_password,
+          user_name: data.user_name,
+          phone: data.phone ? data.phone : "",
+          gender: data.gender,
+        });
+        resolve({
+          code: 0,
+          message: "Successfully created!",
+        });
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// GET USER INFO
 let handleGetUserInfo = (id) => {
   return new Promise(async (resolve, reject) => {
     let data = {};
@@ -171,4 +209,5 @@ module.exports = {
   handleLogin: handleLogin,
   handleLoginViaEmail: handleLoginViaEmail,
   handleGetUserInfo: handleGetUserInfo,
+  createNewUSer: createNewUSer,
 };

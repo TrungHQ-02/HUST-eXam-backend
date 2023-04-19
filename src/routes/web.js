@@ -14,6 +14,7 @@ let initRoutes = (app) => {
   /*
     Related to sign up
   */
+  router.post("/signup", userController.handleUserSignup);
 
   router.get(
     "/getUserInfo",

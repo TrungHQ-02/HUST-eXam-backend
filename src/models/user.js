@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       gender: {
         type: DataTypes.ENUM("male", "female"),
-        allowNull: false,
+        allowNull: true,
       },
       role: {
         type: DataTypes.ENUM("user", "admin"),
@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       rank: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "Beginner",
       },
     },
     {
