@@ -5,10 +5,15 @@ import userController from "../controllers/userController";
 let router = express.Router();
 
 let initRoutes = (app) => {
-  router.post("/login", userController.handleUserLogin);
-  // frontend requests (via post) and sends to server the data of the user, including user_name and user_password
-  router.post("/login-via-email", userController.handleUserLoginViaEmail);
-  // frontend requests (via post) and sends to server the data of the user, including email and user_password
+  /*
+    Related to login
+  */
+  router.post("/login/username", userController.handleUserLogin);
+  router.post("/login/email", userController.handleUserLoginViaEmail);
+
+  /*
+    Related to sign up
+  */
 
   router.get(
     "/getUserInfo",
