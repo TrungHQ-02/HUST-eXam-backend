@@ -12,11 +12,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   Exam.init(
     {
-      title: DataTypes.STRING,
+      title: DataTypes.TEXT,
       start_time: DataTypes.DATE,
       end_time: DataTypes.DATE,
       number_of_question: DataTypes.INTEGER,
       max_score: DataTypes.FLOAT,
+      is_open: DataTypes.BOOLEAN,
       state: DataTypes.ENUM("private", "public"),
     },
     {

@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       gender: {
         type: DataTypes.ENUM("male", "female"),
-        allowNull: true,
+        allowNull: false,
       },
       role: {
         type: DataTypes.ENUM("user", "admin"),

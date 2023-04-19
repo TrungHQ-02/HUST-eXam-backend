@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         allowNull: false,
       },
-      state: DataTypes.STRING,
+      state: DataTypes.ENUM("completed", "incomplete"),
       score: DataTypes.INTEGER,
-      completeTime: DataTypes.DATE,
+      complete_time: DataTypes.DATE,
     },
     {
       sequelize,
