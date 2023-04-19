@@ -54,6 +54,7 @@ let handleLogin = (user_name, user_password) => {
             expiresIn: 86400, // expires in 24 hours
           });
           data.code = 0;
+          data.statusCode = 200;
           data.message = "Successfully logged in!";
           // remove this line if using hashing
           delete user.user_password;
@@ -62,15 +63,18 @@ let handleLogin = (user_name, user_password) => {
           data.token = token;
         } else {
           data.code = 3;
+          data.statusCode = 401;
           data.message = "Wrong password";
         }
       } else {
         // else return this
+        data.statusCode = 401;
         data.code = 2;
         data.message = "The account with provided username does not exist";
       }
     } else {
       // 2-layer validation
+      data.statusCode = 401;
       data.code = 2;
       data.message = "The account with provided username does not exist";
     }
@@ -119,6 +123,7 @@ let handleLoginViaEmail = (email, user_password) => {
             expiresIn: 86400, // expires in 24 hours
           });
           data.code = 0;
+          data.statusCode = 200;
           data.message = "Successfully logged in!";
           // remove this line if using hashing
           delete user.user_password;
@@ -127,16 +132,19 @@ let handleLoginViaEmail = (email, user_password) => {
           data.token = token;
         } else {
           data.code = 3;
+          data.statusCode = 401;
           data.message = "Wrong password";
         }
       } else {
         // else return this
         data.code = 2;
+        data.statusCode = 401;
         data.message = "The account with provided email does not exist";
       }
     } else {
       // 2-layer validation
       data.code = 2;
+      data.statusCode = 401;
       data.message = "The account with provided email does not exist";
     }
     resolve(data);
@@ -151,6 +159,7 @@ let createNewUSer = (data) => {
       if (checkExistEmail === true) {
         resolve({
           code: 2,
+          statusCode: 400,
           message: "Email has been used",
         });
       }
@@ -159,6 +168,7 @@ let createNewUSer = (data) => {
       if (checkExistUsername === true) {
         resolve({
           code: 3,
+          statusCode: 400,
           message: "Username has been used",
         });
       } else {
@@ -173,6 +183,7 @@ let createNewUSer = (data) => {
         });
         resolve({
           code: 0,
+          statusCode: 201,
           message: "Successfully created!",
         });
       }

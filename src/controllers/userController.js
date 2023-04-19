@@ -5,14 +5,14 @@ let handleUserLogin = async (req, res) => {
   let user_name = req.body.user_name;
   let user_password = req.body.user_password;
   if (!user_name || !user_password) {
-    return res.status(500).json({
+    return res.status(400).json({
       code: 1,
       message: "Missing required parameters",
     });
   }
 
   let userData = await userService.handleLogin(user_name, user_password);
-  return res.status(200).json({
+  return res.status(userData.statusCode).json({
     code: userData.code,
     message: userData.message,
     token: userData.token,
@@ -25,14 +25,14 @@ let handleUserLoginViaEmail = async (req, res) => {
   let email = req.body.email;
   let user_password = req.body.user_password;
   if (!email || !user_password) {
-    return res.status(500).json({
+    return res.status(400).json({
       code: 1,
       message: "Missing required parameters",
     });
   }
 
   let userData = await userService.handleLoginViaEmail(email, user_password);
-  return res.status(200).json({
+  return res.status(userData.statusCode).json({
     code: userData.code,
     message: userData.message,
     token: userData.token,
@@ -44,34 +44,34 @@ let handleUserLoginViaEmail = async (req, res) => {
 let handleUserSignup = async (req, res) => {
   let data = req.body;
   if (!data.email) {
-    return res.status(500).json({
+    return res.status(400).json({
       code: 1,
       message: "Missing required parameter: email",
     });
   } else if (!data.user_name) {
-    return res.status(500).json({
+    return res.status(400).json({
       code: 1,
       message: "Missing required parameter: user_name",
     });
   } else if (!data.confirm_password) {
-    return res.status(500).json({
+    return res.status(400).json({
       code: 1,
       message: "Missing required parameter: confirm_password",
     });
   } else if (!data.gender) {
-    return res.status(500).json({
+    return res.status(400).json({
       code: 1,
       message: "Missing required parameter: gender",
     });
   } else {
     if (data.confirm_password !== data.user_password) {
-      return res.status(200).json({
+      return res.status(401).json({
         code: 4,
         message: "Passwords do not match",
       });
     } else {
       let msg = await userService.createNewUSer(data);
-      return res.status(200).json(msg);
+      return res.status(msg.statusCode).json(msg);
     }
   }
 };
