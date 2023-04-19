@@ -1,43 +1,37 @@
 "use strict";
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable("Exams", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      user_password: {
+      title: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      user_name: {
-        type: Sequelize.STRING,
+      start_time: {
+        type: Sequelize.DATE,
         allowNull: false,
       },
-      phone: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      gender: {
-        type: Sequelize.ENUM("male", "female"),
-        allowNull: true,
-      },
-      role: {
-        type: Sequelize.ENUM("user", "admin"),
+      end_time: {
+        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: "user",
       },
-      rank: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      number_of_question: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      max_score: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
+      state: {
+        type: Sequelize.ENUM("private", "public"),
+        allowNull: false,
+        defaultValue: "public",
       },
       createdAt: {
         allowNull: false,
@@ -49,8 +43,7 @@ module.exports = {
       },
     });
   },
-
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Users");
+    await queryInterface.dropTable("Exams");
   },
 };
