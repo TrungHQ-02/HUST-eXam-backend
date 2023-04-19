@@ -21,9 +21,9 @@ const userData = [
     rank: "Intermediate",
   },
   {
-    email: "admin@example.com",
+    email: "user3@example.com",
     user_password: "password3",
-    user_name: "Admin",
+    user_name: "User 3",
     phone: "555555555",
     gender: "male",
     role: "user",
