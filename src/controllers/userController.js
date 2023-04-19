@@ -53,10 +53,10 @@ let handleUserSignup = async (req, res) => {
       code: 1,
       message: "Missing required parameter: user_name",
     });
-  } else if (!data.user_password) {
+  } else if (!data.confirm_password) {
     return res.status(500).json({
       code: 1,
-      message: "Missing required parameter: user_password",
+      message: "Missing required parameter: confirm_password",
     });
   } else if (!data.gender) {
     return res.status(500).json({
@@ -64,8 +64,15 @@ let handleUserSignup = async (req, res) => {
       message: "Missing required parameter: gender",
     });
   } else {
-    let msg = await userService.createNewUSer(data);
-    return res.status(200).json(msg);
+    if (data.confirm_password !== data.user_password) {
+      return res.status(200).json({
+        code: 4,
+        message: "Passwords do not match",
+      });
+    } else {
+      let msg = await userService.createNewUSer(data);
+      return res.status(200).json(msg);
+    }
   }
 };
 
