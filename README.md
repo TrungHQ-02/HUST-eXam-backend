@@ -17,6 +17,9 @@
 -Chạy lệnh npm start.
 
 -Nếu thành công, terminal sẽ hiển thị thông báo "Our server is running on port 8001" và "Connection to database has been established successfully."
+
+-Trong môi trường development, khi chạy npm start + bật server (server có tạo một db tên là hust_exam) thì db sẽ được tạo
+ cd vào src, chạy câu lệnh node fakeDataEngine.js để tạo mock data
 ---
 **LƯU Ý**:
 - File ENV sẽ để các biến môi trường, trong thực tế file ENV sẽ được giấu đi. Tuy nhiên, trong dự án nhà làm thì Trung chọn cách public file này lên
