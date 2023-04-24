@@ -128,9 +128,29 @@ let updateUserInfo = async (req, res) => {
   });
 };
 
+let deleteUser = async (req, res) => {
+  let id = req.body.userId;
+  // console.log(id);
+  if (!id) {
+    return res.status(500).json({
+      code: 1,
+      message: "Missing required parameters",
+    });
+  }
+
+  let responseData = await userService.handleDeleteUser(id);
+  return res.status(200).json({
+    code: responseData.code,
+    message: responseData.message,
+    // user: userData.user ? userData.user : {},
+  });
+};
+
 module.exports = {
   handleUserLogin: handleUserLogin,
   handleUserLoginViaEmail: handleUserLoginViaEmail,
   getUserInfo: getUserInfo,
   handleUserSignup: handleUserSignup,
+  updateUserInfo: updateUserInfo,
+  deleteUser: deleteUser,
 };

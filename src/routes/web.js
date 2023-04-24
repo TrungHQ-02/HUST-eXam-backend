@@ -21,6 +21,20 @@ let initRoutes = (app) => {
     authMiddleware.verifyToken,
     userController.getUserInfo
   );
+
+  // Related to CRUD user
+  router.put(
+    "/user/update",
+    authMiddleware.verifyToken,
+    userController.updateUserInfo
+  );
+
+  router.delete(
+    "/user/delete",
+    authMiddleware.verifyToken,
+    userController.deleteUser
+  );
+
   return app.use("/api", router);
 };
 
