@@ -1,5 +1,4 @@
 const { sequelize } = require("./models");
-
 // User data
 const userData = [
   {
