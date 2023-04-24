@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
+  // authorization using bearer token
   if (!authHeader) {
     return res.status(401).json({
       code: "x001",
