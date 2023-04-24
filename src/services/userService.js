@@ -233,9 +233,65 @@ let handleGetUserInfo = (id) => {
   });
 };
 
+let handelUpdateUserInfo = (data) => {
+  return new Promise(async (resolve, reject) => {
+    let id = data.userId;
+    // console.log("hello from service", data);
+    let user = await db.User.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    user.phone = data.phone;
+    user.user_password = data.user_password;
+    user.gender = data.gender;
+
+    await user.save();
+    let updatedUser = await db.User.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (updatedUser) {
+      data.code = 0;
+      data.message = "Successfully updated";
+      delete updatedUser.user_password;
+      data.user = updatedUser;
+    }
+
+    resolve(data);
+  });
+};
+
+let handleDeleteUser = (id) => {
+  return new Promise(async (resolve, reject) => {
+    // console.log(typeof id);
+    let data = {};
+    let user = await db.User.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (user) {
+      await user.destroy();
+      data.code = 0;
+      data.message = "Successfully deleted!";
+    } else {
+      data.code = 2;
+      data.message = "Your account does not exist";
+    }
+    resolve(data);
+  });
+};
+
 module.exports = {
   handleLogin: handleLogin,
   handleLoginViaEmail: handleLoginViaEmail,
   handleGetUserInfo: handleGetUserInfo,
   createNewUSer: createNewUSer,
+  handelUpdateUserInfo: handelUpdateUserInfo,
+  handleDeleteUser: handleDeleteUser,
 };
