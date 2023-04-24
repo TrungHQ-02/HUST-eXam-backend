@@ -102,6 +102,32 @@ let getUserInfo = async (req, res) => {
   }
 };
 
+let updateUserInfo = async (req, res) => {
+  let id = req.body.userId;
+  // console.log(id);
+  if (!id) {
+    return res.status(500).json({
+      code: 1,
+      message: "Missing required parameters",
+    });
+  }
+
+  let data = req.body;
+  // data.userId;
+  delete data.userEmail;
+  delete data.userName;
+
+  // Fields that could be changed: password, phone, gender
+  // console.log(data);
+
+  let userData = await userService.handelUpdateUserInfo(data);
+  return res.status(200).json({
+    code: userData.code,
+    message: userData.message,
+    user: userData.user ? userData.user : {},
+  });
+};
+
 module.exports = {
   handleUserLogin: handleUserLogin,
   handleUserLoginViaEmail: handleUserLoginViaEmail,
