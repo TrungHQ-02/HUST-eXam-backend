@@ -83,7 +83,7 @@ let getUserInfo = async (req, res) => {
   if (id !== requestedId) {
     return res.status(500).json({
       code: 3,
-      message: "Unauthorized",
+      message: "Unauthorized: user cannot access this resource",
     });
   } else {
     if (!id) {

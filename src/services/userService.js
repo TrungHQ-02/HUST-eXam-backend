@@ -50,9 +50,17 @@ let handleLogin = (user_name, user_password) => {
         // if the user with the provided username truly exists
         let checkPassword = user_password === user.user_password;
         if (checkPassword) {
-          const token = jwt.sign(user, process.env.JWT_SECRET, {
-            expiresIn: 86400, // expires in 24 hours
-          });
+          const token = jwt.sign(
+            {
+              id: user.id,
+              user_name: user.user_name,
+              email: user.email,
+            },
+            process.env.JWT_SECRET,
+            {
+              expiresIn: 86400, // expires in 24 hours
+            }
+          );
           data.code = 0;
           data.statusCode = 200;
           data.message = "Successfully logged in!";
@@ -119,9 +127,17 @@ let handleLoginViaEmail = (email, user_password) => {
         // if the user with the provided username truly exists
         let checkPassword = user_password === user.user_password;
         if (checkPassword) {
-          const token = jwt.sign(user, process.env.JWT_SECRET, {
-            expiresIn: 86400, // expires in 24 hours
-          });
+          const token = jwt.sign(
+            {
+              id: user.id,
+              user_name: user.user_name,
+              email: user.email,
+            },
+            process.env.JWT_SECRET,
+            {
+              expiresIn: 86400, // expires in 24 hours
+            }
+          );
           data.code = 0;
           data.statusCode = 200;
           data.message = "Successfully logged in!";
