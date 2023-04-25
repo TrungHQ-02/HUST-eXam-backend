@@ -1,6 +1,7 @@
 import express from "express";
 import authMiddleware from "../middlewares/authMiddleware";
 import userController from "../controllers/userController";
+import examController from "../controllers/examController";
 
 let router = express.Router();
 
@@ -34,6 +35,16 @@ let initRoutes = (app) => {
     authMiddleware.verifyToken,
     userController.deleteUser
   );
+
+  // Related to CRUD exam
+  // get all exams
+  router.get("/exams", examController.getAllExams);
+  //get all public exams
+  router.get("/exams/public", examController.getAllPublicExams);
+  // get exam by id
+  router.get("/exam/:id", examController.getExamById);
+
+  router.post("/exam", examController.createNewExam);
 
   return app.use("/api", router);
 };
