@@ -18,20 +18,20 @@ let initRoutes = (app) => {
   router.post("/signup", userController.handleUserSignup);
 
   router.get(
-    "/getUserInfo",
+    "/user/:id",
     authMiddleware.verifyToken,
     userController.getUserInfo
   );
 
   // Related to CRUD user
   router.put(
-    "/user/update",
+    "/user/:id/update",
     authMiddleware.verifyToken,
     userController.updateUserInfo
   );
 
   router.delete(
-    "/user/delete",
+    "/user/:id/delete",
     authMiddleware.verifyToken,
     userController.deleteUser
   );
@@ -41,6 +41,7 @@ let initRoutes = (app) => {
   router.get("/exams", examController.getAllExams);
   //get all public exams
   router.get("/exams/public", examController.getAllPublicExams);
+  0;
   // get exam by id
   router.get("/exam/:id", examController.getExamById);
 

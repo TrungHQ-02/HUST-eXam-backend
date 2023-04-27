@@ -79,7 +79,7 @@ let handleUserSignup = async (req, res) => {
 // GET USER INFO
 let getUserInfo = async (req, res) => {
   let id = req.query.userId;
-  let requestedId = req.query.id;
+  let requestedId = req.params.id;
   if (id !== requestedId) {
     return res.status(500).json({
       code: 3,
@@ -105,45 +105,63 @@ let getUserInfo = async (req, res) => {
 let updateUserInfo = async (req, res) => {
   let id = req.body.userId;
   // console.log(id);
-  if (!id) {
+  let requestedId = req.params.id;
+  console.log(req.params, requestedId, typeof requestedId, typeof id);
+  if (id !== requestedId) {
     return res.status(500).json({
-      code: 1,
-      message: "Missing required parameters",
+      code: 3,
+      message: "Unauthorized: user cannot access this resource",
+    });
+  } else {
+    if (!id) {
+      return res.status(500).json({
+        code: 1,
+        message: "Missing required parameters",
+      });
+    }
+
+    let data = req.body;
+    // data.userId;
+    delete data.userEmail;
+    delete data.userName;
+
+    // Fields that could be changed: password, phone, gender
+    // console.log(data);
+
+    let userData = await userService.handelUpdateUserInfo(data);
+    return res.status(200).json({
+      code: userData.code,
+      message: userData.message,
+      user: userData.user ? userData.user : {},
     });
   }
-
-  let data = req.body;
-  // data.userId;
-  delete data.userEmail;
-  delete data.userName;
-
-  // Fields that could be changed: password, phone, gender
-  // console.log(data);
-
-  let userData = await userService.handelUpdateUserInfo(data);
-  return res.status(200).json({
-    code: userData.code,
-    message: userData.message,
-    user: userData.user ? userData.user : {},
-  });
 };
 
 let deleteUser = async (req, res) => {
   let id = req.body.userId;
   // console.log(id);
-  if (!id) {
+  let requestedId = req.params.id;
+  console.log(req.params, requestedId, typeof requestedId, typeof id);
+  if (id !== requestedId) {
     return res.status(500).json({
-      code: 1,
-      message: "Missing required parameters",
+      code: 3,
+      message: "Unauthorized: user cannot access this resource",
+    });
+  } else {
+    if (!id) {
+      return res.status(500).json({
+        code: 1,
+        message: "Missing required parameters",
+      });
+    }
+
+    let responseData = await userService.handleDeleteUser(id);
+    return res.status(200).json({
+      code: responseData.code,
+      message: responseData.message,
+      // user: userData.user ? userData.user : {},
     });
   }
-
-  let responseData = await userService.handleDeleteUser(id);
-  return res.status(200).json({
-    code: responseData.code,
-    message: responseData.message,
-    // user: userData.user ? userData.user : {},
-  });
 };
 
 module.exports = {
