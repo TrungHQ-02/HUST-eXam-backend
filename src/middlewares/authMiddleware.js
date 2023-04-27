@@ -6,7 +6,7 @@ const verifyToken = (req, res, next) => {
   if (!authHeader) {
     return res.status(401).json({
       code: "x001",
-      message: "Unauthorized: No token provided",
+      message: "Unauthorized:  No token provided",
     });
   }
 
