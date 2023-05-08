@@ -60,9 +60,25 @@ let createNewExam = async (req, res) => {
   }
 };
 
+let submit = async (req, res) => {
+  let data = req.body;
+  let examId = req.params.id;
+  let msg = await examService.handleSubmit(examId, data);
+  return res.status(msg.statusCode).json(msg);
+};
+
+let getExamResult = async (req, res) => {
+  let userId = req.body.user_id;
+  let examId = req.params.id;
+  let msg = await examService.handleGetExamResult(examId, userId);
+  return res.status(msg.statusCode).json(msg);
+};
+
 module.exports = {
   getAllExams: getAllExams,
   getAllPublicExams: getAllPublicExams,
   getExamById: getExamById,
   createNewExam: createNewExam,
+  submit: submit,
+  getExamResult: getExamResult,
 };

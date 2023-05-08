@@ -158,5 +158,4 @@ const questionData = [
   await sequelize.models.User.bulkCreate(userData);
   await sequelize.models.Exam.bulkCreate(examData);
   await sequelize.models.Question.bulkCreate(questionData);
-  await sequelize.models.ExamResult.bulkCreate(examResultData);
 })();

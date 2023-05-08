@@ -47,6 +47,11 @@ let initRoutes = (app) => {
 
   router.post("/exam", examController.createNewExam);
 
+  // submit
+  router.post("/exam/:id/submit", examController.submit);
+
+  // get exam result and answer list
+  router.get("/exam/:id/result", examController.getExamResult);
   return app.use("/api", router);
 };
 

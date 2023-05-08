@@ -1,6 +1,5 @@
-import { raw } from "express";
+import { resolveInclude } from "ejs";
 import db from "../models";
-import jwt from "jsonwebtoken";
 
 let handleGetAllExams = () => {
   return new Promise(async (resolve, reject) => {
@@ -90,9 +89,119 @@ let handleCreateNewExam = (data) => {
   });
 };
 
+let handleSubmit = (examId, data) => {
+  return new Promise(async (resolve, reject) => {
+    // get question list
+    const examData = await db.Exam.findAll({
+      where: {
+        id: examId,
+      },
+      include: db.Question,
+    });
+
+    let keyData = JSON.parse(JSON.stringify(examData, null, 2));
+    let keyList = keyData[0].Questions;
+
+    // console.log(keyList);
+    let answerList = data.answers;
+    // console.log(answerList);
+
+    let res = 0;
+    for (let i = 0; i < answerList.length; i++) {
+      let quesId = answerList[i].question_id;
+
+      // get key list of that question
+      let keys = getKeyListById(quesId, keyList);
+      console.log(keys);
+
+      if (
+        JSON.stringify(keys) === JSON.stringify(answerList[i].selected_options)
+      ) {
+        res += 1;
+      } else {
+        res += 0;
+      }
+    }
+    console.log(res);
+
+    try {
+      await db.ExamResult.create({
+        state: "completed",
+        score: res,
+        complete_time: new Date(),
+        ExamId: examId,
+        UserId: data.user_id,
+      });
+
+      resolve({
+        code: 0,
+        statusCode: 200,
+        message: "Successfully submitted!",
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+function getKeyListById(quesId, arr) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].id === quesId) {
+      return JSON.parse(arr[i].key_list);
+    }
+  }
+  return null;
+}
+
+let handleGetExamResult = (examId, userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const examData = await db.Exam.findAll({
+        where: {
+          id: examId,
+        },
+        include: db.Question,
+      });
+
+      let keyData = JSON.parse(JSON.stringify(examData, null, 2));
+      let keyList = keyData[0].Questions;
+
+      let keyArray = keyList.map(function (item) {
+        return {
+          questionId: item.id,
+          keys: JSON.parse(item.key_list),
+        };
+      });
+
+      console.log(keyArray);
+      const resultData = await db.ExamResult.findOne({
+        where: {
+          ExamId: examId,
+          UserId: userId,
+        },
+        raw: true,
+      });
+
+      console.log(resultData);
+      resolve({
+        code: 0,
+        statusCode: 200,
+        message: "OK",
+        score: resultData.score,
+        complete_time: resultData.complete_time,
+        keys: keyArray,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   handleGetAllExams: handleGetAllExams,
   handleGetAllPublicExams: handleGetAllPublicExams,
   handleGetExamById: handleGetExamById,
   handleCreateNewExam: handleCreateNewExam,
+  handleSubmit: handleSubmit,
+  handleGetExamResult: handleGetExamResult,
 };
