@@ -19,6 +19,8 @@ module.exports = (sequelize, DataTypes) => {
       max_score: DataTypes.FLOAT,
       is_open: DataTypes.BOOLEAN,
       state: DataTypes.ENUM("private", "public"),
+      duration: DataTypes.INTEGER, //sec
+      password: DataTypes.STRING, // password for private
     },
     {
       sequelize,

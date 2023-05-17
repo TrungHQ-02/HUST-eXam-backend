@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Question.init(
     {
+      image_link: DataTypes.TEXT,
+      quiz_question: DataTypes.TEXT,
+      point: { type: DataTypes.FLOAT, defaultValue: 1 },
       quiz_type: DataTypes.STRING,
       answer_list: { type: DataTypes.JSON, defaultValue: [] },
       key_list: { type: DataTypes.JSON, defaultValue: [] },
