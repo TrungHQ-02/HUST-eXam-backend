@@ -52,6 +52,7 @@ let initRoutes = (app) => {
 
   // get exam result and answer list
   router.get("/exam/:id/result", examController.getExamResult);
+
   return app.use("/api", router);
 };
 
