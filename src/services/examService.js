@@ -1,4 +1,3 @@
-import { resolveInclude } from "ejs";
 import db from "../models";
 
 let handleGetAllExams = () => {
@@ -76,6 +75,8 @@ let handleCreateNewExam = (data) => {
         max_score: 0,
         is_open: false,
         state: data.state ? data.state : "public",
+        duration: data.duration ? data.duration : 1000000,
+        password: data.password ? data.password : "",
       });
 
       resolve({
@@ -102,7 +103,7 @@ let handleSubmit = (examId, data) => {
     let keyData = JSON.parse(JSON.stringify(examData, null, 2));
     let keyList = keyData[0].Questions;
 
-    // console.log(keyList);
+    console.log("check keylist", keyList);
     let answerList = data.answers;
     // console.log(answerList);
 
@@ -112,12 +113,14 @@ let handleSubmit = (examId, data) => {
 
       // get key list of that question
       let keys = getKeyListById(quesId, keyList);
-      console.log(keys);
+      // console.log("check key", keys);
 
+      // console.log("check point", getPointById(quesId, keyList));
+      let point = getPointById(quesId, keyList);
       if (
         JSON.stringify(keys) === JSON.stringify(answerList[i].selected_options)
       ) {
-        res += 1;
+        res += point;
       } else {
         res += 0;
       }
@@ -128,7 +131,7 @@ let handleSubmit = (examId, data) => {
       await db.ExamResult.create({
         state: "completed",
         score: res,
-        complete_time: new Date(),
+        complete_time: data.complete_time, // in second
         ExamId: examId,
         UserId: data.user_id,
       });
@@ -148,6 +151,15 @@ function getKeyListById(quesId, arr) {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].id === quesId) {
       return JSON.parse(arr[i].key_list);
+    }
+  }
+  return null;
+}
+
+function getPointById(quesId, arr) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].id === quesId) {
+      return arr[i].point;
     }
   }
   return null;
