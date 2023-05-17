@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       state: DataTypes.ENUM("private", "public"),
       duration: DataTypes.INTEGER, //sec
       password: DataTypes.STRING, // password for private
+      author: DataTypes.INTEGER, // id of user who created the exam
     },
     {
       sequelize,
