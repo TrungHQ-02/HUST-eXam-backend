@@ -2,7 +2,7 @@ import express from "express";
 import authMiddleware from "../middlewares/authMiddleware";
 import userController from "../controllers/userController";
 import examController from "../controllers/examController";
-
+import questionController from "../controllers/questionController";
 let router = express.Router();
 
 let initRoutes = (app) => {
@@ -53,6 +53,16 @@ let initRoutes = (app) => {
   // get exam result and answer list
   router.get("/exam/:id/result", examController.getExamResult);
 
+  // Related to CRUD Question
+  router.post("/exam/:id/questions", questionController.addQuestionsToExam);
+  router.put(
+    "/exam/:id/questions/:questionId",
+    questionController.updateQuestion
+  );
+  router.delete(
+    "/exam/:id/questions/:questionId",
+    questionController.deleteQuestion
+  );
   return app.use("/api", router);
 };
 

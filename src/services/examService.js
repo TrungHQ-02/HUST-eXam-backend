@@ -213,6 +213,37 @@ let handleGetExamResult = (examId, userId) => {
   });
 };
 
+let handleModifyMaxScoreAndNumberOfQuestions = (examId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const examData = await db.Exam.findOne({
+        where: {
+          id: examId,
+        },
+        include: db.Question,
+      });
+
+      let keyData = JSON.parse(JSON.stringify(examData, null, 2));
+      // console.log(keyData[0].Questions);
+      let list = keyData.Questions;
+      let numberOfQuestion = 0;
+      let totalPoint = 0;
+
+      for (let i = 0; i < list.length; i++) {
+        numberOfQuestion += 1;
+        totalPoint += list[i].point;
+      }
+      console.log(numberOfQuestion, totalPoint);
+      examData.number_of_question = numberOfQuestion;
+      examData.max_score = totalPoint;
+      await examData.save();
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   handleGetAllExams: handleGetAllExams,
   handleGetAllPublicExams: handleGetAllPublicExams,
@@ -220,4 +251,6 @@ module.exports = {
   handleCreateNewExam: handleCreateNewExam,
   handleSubmit: handleSubmit,
   handleGetExamResult: handleGetExamResult,
+  handleModifyMaxScoreAndNumberOfQuestions:
+    handleModifyMaxScoreAndNumberOfQuestions,
 };
