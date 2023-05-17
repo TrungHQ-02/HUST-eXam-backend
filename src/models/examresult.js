@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       state: DataTypes.ENUM("completed", "incomplete"),
       score: DataTypes.INTEGER,
-      complete_time: DataTypes.DATE,
+      complete_time: DataTypes.INTEGER,
     },
     {
       sequelize,

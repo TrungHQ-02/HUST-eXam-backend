@@ -127,11 +127,15 @@ let handleSubmit = (examId, data) => {
     }
     console.log(res);
 
+    console.log("check duration", keyData[0].duration);
+
     try {
       await db.ExamResult.create({
         state: "completed",
         score: res,
-        complete_time: data.complete_time, // in second
+        complete_time: data.complete_time
+          ? data.complete_time
+          : keyData[0].duration, // in second
         ExamId: examId,
         UserId: data.user_id,
       });
