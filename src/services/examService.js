@@ -77,6 +77,7 @@ let handleCreateNewExam = (data) => {
         state: data.state ? data.state : "public",
         duration: data.duration ? data.duration : 1000000,
         password: data.password ? data.password : "",
+        author: data.author ? data.author : null,
       });
 
       resolve({
