@@ -243,9 +243,11 @@ let handelUpdateUserInfo = (data) => {
       },
     });
 
-    user.phone = data.phone;
-    user.user_password = data.user_password;
-    user.gender = data.gender;
+    user.phone = data.phone ? data.phone : user.phone;
+    user.user_password = data.user_password
+      ? data.user_password
+      : user.user_password;
+    user.gender = data.gender ? data.gender : user.gender;
 
     await user.save();
     let updatedUser = await db.User.findOne({
