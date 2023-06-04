@@ -74,7 +74,15 @@ let getExamResult = async (req, res) => {
   return res.status(msg.statusCode).json(msg);
 };
 
+let getAllExamsByUserId = async (req, res) => {
+  let userId = req.params.userId;
+  console.log(userId);
+  let msg = await examService.handleGetExamResultsByUserId(userId);
+  return res.status(msg.statusCode).json(msg);
+};
+
 module.exports = {
+  getAllExamsByUserId: getAllExamsByUserId,
   getAllExams: getAllExams,
   getAllPublicExams: getAllPublicExams,
   getExamById: getExamById,

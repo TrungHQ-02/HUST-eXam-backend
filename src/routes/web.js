@@ -63,6 +63,8 @@ let initRoutes = (app) => {
     "/exam/:id/questions/:questionId",
     questionController.deleteQuestion
   );
+
+  router.get("/exam/result/:userId", examController.getAllExamsByUserId);
   return app.use("/api", router);
 };
 

@@ -73,7 +73,7 @@ let handleCreateNewExam = (data) => {
         end_time: new Date(data.end_time),
         number_of_question: 0,
         max_score: 0,
-        is_open: false,
+        is_open: data.is_open ? data.is_open : false,
         state: data.state ? data.state : "public",
         duration: data.duration ? data.duration : 1000000,
         password: data.password ? data.password : "",
@@ -245,6 +245,29 @@ let handleModifyMaxScoreAndNumberOfQuestions = (examId) => {
   });
 };
 
+let handleGetExamResultsByUserId = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let results = await db.ExamResult.findAll({
+        where: {
+          UserId: userId,
+        },
+        raw: true,
+      });
+
+      console.log(results);
+      resolve({
+        code: 0,
+        statusCode: 200,
+        message: "OK",
+        allTests: results,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   handleGetAllExams: handleGetAllExams,
   handleGetAllPublicExams: handleGetAllPublicExams,
@@ -254,4 +277,5 @@ module.exports = {
   handleGetExamResult: handleGetExamResult,
   handleModifyMaxScoreAndNumberOfQuestions:
     handleModifyMaxScoreAndNumberOfQuestions,
+  handleGetExamResultsByUserId: handleGetExamResultsByUserId,
 };
