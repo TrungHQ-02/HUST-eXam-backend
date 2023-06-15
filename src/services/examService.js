@@ -3,14 +3,15 @@ import db from "../models";
 let handleGetAllExams = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      let exams = await db.Exam.findAll({ raw: true });
-      console.log(exams);
+      let exams = await db.Exam.findAll({
+        raw: true,
+        attributes: { exclude: ["password"] },
+      });
       resolve({
         code: 0,
         message: "OK",
         exams: exams,
       });
-      resolve(exams);
     } catch (error) {
       reject(error);
     }
@@ -25,14 +26,13 @@ let handleGetAllPublicExams = () => {
           state: "public",
         },
         raw: true,
+        attributes: { exclude: ["password"] },
       });
-      console.log(exams);
       resolve({
         code: 0,
         message: "OK",
         exams: exams,
       });
-      resolve(exams);
     } catch (error) {
       reject(error);
     }
@@ -102,21 +102,34 @@ let handleSubmit = (examId, data) => {
     });
 
     let keyData = JSON.parse(JSON.stringify(examData, null, 2));
+
+    const currentDate = new Date();
+    const myDate = new Date(keyData[0].end_time);
+    console.log(keyData[0].end_time);
+
+    if (currentDate.getTime() > myDate.getTime()) {
+      resolve({
+        code: 3,
+        statusCode: 400,
+        message: "This exam has been closed",
+      });
+    }
+
+    if (keyData[0].is_open === false) {
+      resolve({
+        code: 3,
+        statusCode: 400,
+        message: "This exam has been closed",
+      });
+    }
+
     let keyList = keyData[0].Questions;
-
-    console.log("check keylist", keyList);
     let answerList = data.answers;
-    // console.log(answerList);
-
     let res = 0;
     for (let i = 0; i < answerList.length; i++) {
       let quesId = answerList[i].question_id;
-
       // get key list of that question
       let keys = getKeyListById(quesId, keyList);
-      // console.log("check key", keys);
-
-      // console.log("check point", getPointById(quesId, keyList));
       let point = getPointById(quesId, keyList);
       if (
         JSON.stringify(keys) === JSON.stringify(answerList[i].selected_options)
@@ -126,28 +139,42 @@ let handleSubmit = (examId, data) => {
         res += 0;
       }
     }
-    console.log(res);
 
-    console.log("check duration", keyData[0].duration);
-
-    try {
-      await db.ExamResult.create({
-        state: "completed",
-        score: res,
-        complete_time: data.complete_time
-          ? data.complete_time
-          : keyData[0].duration, // in second
+    // check if user had submitted that test before
+    let submitted = await db.ExamResult.findAll({
+      where: {
         ExamId: examId,
         UserId: data.user_id,
-      });
+      },
+      raw: true,
+    });
 
+    if (submitted.length === 1) {
       resolve({
-        code: 0,
-        statusCode: 200,
-        message: "Successfully submitted!",
+        code: 2,
+        statusCode: 400,
+        message: "You have submitted to this exam before",
       });
-    } catch (error) {
-      reject(error);
+    } else {
+      try {
+        await db.ExamResult.create({
+          state: "completed",
+          score: res,
+          complete_time: data.complete_time
+            ? data.complete_time
+            : keyData[0].duration, // in second
+          ExamId: examId,
+          UserId: data.user_id,
+        });
+
+        resolve({
+          code: 0,
+          statusCode: 200,
+          message: "Successfully submitted!",
+        });
+      } catch (error) {
+        reject(error);
+      }
     }
   });
 };

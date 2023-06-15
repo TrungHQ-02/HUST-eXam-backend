@@ -28,7 +28,6 @@ let getExamById = async (req, res) => {
       message: "Missing required parameters",
     });
   }
-  console.log(id);
   let examData = await examService.handleGetExamById(id);
   return res.status(examData.statusCode).json({
     code: examData.code,
