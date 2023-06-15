@@ -52,6 +52,21 @@ let handleGetExamById = (id) => {
       },
     });
     let rawData = JSON.parse(JSON.stringify(examData, null, 2));
+
+    console.log(rawData);
+    let password = "lorem";
+
+    console.log(rawData[0].author);
+    if (rawData[0].password !== null) {
+      if (password !== rawData[0].password) {
+        resolve({
+          statusCode: 401,
+          code: 3,
+          message: "Wrong password",
+        });
+      }
+    }
+
     if (rawData.length === 0) {
       data.statusCode = 401;
       data.code = 2;
