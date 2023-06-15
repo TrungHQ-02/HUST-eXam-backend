@@ -46,7 +46,10 @@ let handleGetExamById = (id) => {
       where: {
         id: id,
       },
-      include: db.Question,
+      include: {
+        model: db.Question,
+        attributes: { exclude: ["key_list"] },
+      },
     });
     let rawData = JSON.parse(JSON.stringify(examData, null, 2));
     if (rawData.length === 0) {
