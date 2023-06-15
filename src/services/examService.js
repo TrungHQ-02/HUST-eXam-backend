@@ -313,6 +313,56 @@ let handleGetExamResultsByUserId = (userId) => {
   });
 };
 
+let handleUpdateExam = (examId, data) => {
+  return new Promise(async (resolve, reject) => {
+    // title: DataTypes.TEXT,
+    //   start_time: DataTypes.DATE,
+    //   end_time: DataTypes.DATE,
+    //   number_of_question: { type: DataTypes.INTEGER, defaultValue: 0 },
+    //   max_score: { type: DataTypes.FLOAT, defaultValue: 0 },
+    //   is_open: DataTypes.BOOLEAN,
+    //   state: DataTypes.ENUM("private", "public"),
+    //   duration: { type: DataTypes.INTEGER, defaultValue: 0 }, //sec
+    //   password: DataTypes.STRING, // password for private
+    //   author: DataTypes.INTEGER, // id of user who created the exam
+    try {
+      let exam = await db.Exam.findOne({
+        where: { id: examId },
+      });
+
+      if (exam) {
+        exam.title = data.title;
+        exam.start_time = data.start_time;
+        exam.end_time = data.end_time;
+        exam.number_of_question = data.number_of_question;
+        exam.max_score = data.max_score;
+        exam.is_open = data.is_open;
+        exam.state = data.state;
+        exam.duration = data.duration;
+        exam.password = data.password;
+        exam.author = data.author;
+
+        console.log(new Date());
+
+        await exam.save();
+        resolve({
+          code: 0,
+          statusCode: 200,
+          message: "Successfully updated",
+        });
+      } else {
+        resolve({
+          code: 2,
+          statusCode: 404,
+          message: "Exam not found",
+        });
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   handleGetAllExams: handleGetAllExams,
   handleGetAllPublicExams: handleGetAllPublicExams,
@@ -323,4 +373,5 @@ module.exports = {
   handleModifyMaxScoreAndNumberOfQuestions:
     handleModifyMaxScoreAndNumberOfQuestions,
   handleGetExamResultsByUserId: handleGetExamResultsByUserId,
+  handleUpdateExam: handleUpdateExam,
 };

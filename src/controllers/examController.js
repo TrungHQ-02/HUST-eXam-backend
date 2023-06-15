@@ -80,6 +80,14 @@ let getAllExamsByUserId = async (req, res) => {
   return res.status(msg.statusCode).json(msg);
 };
 
+let updateExam = async (req, res) => {
+  let examId = req.params.id;
+  let data = req.body;
+  console.log("id from controller", examId);
+  let msg = await examService.handleUpdateExam(examId, data);
+  return res.status(msg.statusCode).json(msg);
+};
+
 module.exports = {
   getAllExamsByUserId: getAllExamsByUserId,
   getAllExams: getAllExams,
@@ -88,4 +96,5 @@ module.exports = {
   createNewExam: createNewExam,
   submit: submit,
   getExamResult: getExamResult,
+  updateExam: updateExam,
 };
