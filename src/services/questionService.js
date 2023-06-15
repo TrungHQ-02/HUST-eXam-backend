@@ -4,6 +4,14 @@ let handleAddQuestionToExam = (data, examId) => {
   return new Promise(async (resolve, reject) => {
     try {
       // console.log(data, examId);
+      if (!data || data.length === 0) {
+        resolve({
+          code: 0,
+          statusCode: 400,
+          message: "Bad request",
+        });
+      }
+
       for (let i = 0; i < data.length; i++) {
         await db.Question.create({
           image_link: data[i].image_link,
@@ -36,12 +44,18 @@ let handleUpdateQuestion = (data, questionId) => {
         },
       });
 
-      question.image_link = data.image_link;
-      question.quiz_question = data.quiz_question;
-      question.point = data.point;
-      question.quiz_type = data.quiz_type;
-      question.answer_list = data.answer_list;
-      question.key_list = data.key_list;
+      question.image_link = data.image_link
+        ? data.image_link
+        : question.image_link;
+      question.quiz_question = data.quiz_question
+        ? data.quiz_question
+        : question.quiz_question;
+      question.point = data.point ? data.point : question.point;
+      question.quiz_type = data.quiz_type ? data.quiz_type : question.quiz_type;
+      question.answer_list = data.answer_list
+        ? data.answer_list
+        : question.answer_list;
+      question.key_list = data.key_list ? data.key_list : question.key_list;
 
       await question.save();
       let updatedQuestion = await db.Question.findOne({
