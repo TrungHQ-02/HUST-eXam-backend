@@ -106,8 +106,40 @@ let handleDeleteQuestion = (id) => {
   });
 };
 
+let handleUploadImage = (id, link) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let question = await db.Question.findOne({
+        where: {
+          id: id,
+        },
+      });
+
+      if (question) {
+        question.image_link = link;
+        await question.save();
+        resolve({
+          code: 0,
+          statusCode: 200,
+          message: "Successfully uploaded",
+          link: link,
+        });
+      } else {
+        resolve({
+          code: 2,
+          statusCode: 400,
+          message: "Question not found",
+        });
+      }
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 module.exports = {
   handleAddQuestionToExam: handleAddQuestionToExam,
   handleUpdateQuestion: handleUpdateQuestion,
   handleDeleteQuestion: handleDeleteQuestion,
+  handleUploadImage: handleUploadImage,
 };

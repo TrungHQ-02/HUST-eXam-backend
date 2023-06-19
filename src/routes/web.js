@@ -11,7 +11,7 @@ let initRoutes = (app) => {
     Related to login
   */
 
-  app.use("/api/upload", imageUploadRoutes);
+  app.use("/api", imageUploadRoutes);
   router.post("/login/username", userController.handleUserLogin);
   router.post("/login/email", userController.handleUserLoginViaEmail);
 
