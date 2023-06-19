@@ -227,31 +227,41 @@ let handleGetExamResult = (examId, userId) => {
       let keyData = JSON.parse(JSON.stringify(examData, null, 2));
       let keyList = keyData[0].Questions;
 
-      let keyArray = keyList.map(function (item) {
-        return {
-          questionId: item.id,
-          keys: JSON.parse(item.key_list),
-        };
-      });
+      const currentDate = new Date();
+      const myDate = new Date(keyData[0].end_time);
+      console.log(keyData[0].end_time);
 
-      console.log(keyArray);
-      const resultData = await db.ExamResult.findOne({
-        where: {
-          ExamId: examId,
-          UserId: userId,
-        },
-        raw: true,
-      });
+      if (currentDate.getTime() < myDate.getTime()) {
+        resolve({
+          code: 3,
+          statusCode: 400,
+          message:
+            "This exam is not finished yet, the results cannot be viewed.",
+        });
+      } else {
+        let keyArray = keyList.map(function (item) {
+          return {
+            questionId: item.id,
+            keys: JSON.parse(item.key_list),
+          };
+        });
+        const resultData = await db.ExamResult.findOne({
+          where: {
+            ExamId: examId,
+            UserId: userId,
+          },
+          raw: true,
+        });
 
-      console.log(resultData);
-      resolve({
-        code: 0,
-        statusCode: 200,
-        message: "OK",
-        score: resultData.score,
-        complete_time: resultData.complete_time,
-        keys: keyArray,
-      });
+        resolve({
+          code: 0,
+          statusCode: 200,
+          message: "OK",
+          score: resultData.score,
+          complete_time: resultData.complete_time,
+          keys: keyArray,
+        });
+      }
     } catch (error) {
       reject(error);
     }
