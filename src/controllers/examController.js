@@ -22,13 +22,14 @@ let getAllPublicExams = async (req, res) => {
 
 let getExamById = async (req, res) => {
   let id = req.params.id;
+  let password = req.body.password;
   if (!id) {
     return res.status(400).json({
       code: 1,
       message: "Missing required parameters",
     });
   }
-  let examData = await examService.handleGetExamById(id);
+  let examData = await examService.handleGetExamById(id, password);
   return res.status(examData.statusCode).json({
     code: examData.code,
     message: examData.message,

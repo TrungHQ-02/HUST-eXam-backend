@@ -41,9 +41,8 @@ let initRoutes = (app) => {
   router.get("/exams", examController.getAllExams);
   //get all public exams
   router.get("/exams/public", examController.getAllPublicExams);
-  0;
   // get exam by id
-  router.get("/exam/:id", examController.getExamById);
+  router.post("/exam/:id", examController.getExamById);
 
   router.post("/exam", examController.createNewExam);
 

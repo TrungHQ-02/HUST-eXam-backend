@@ -39,9 +39,10 @@ let handleGetAllPublicExams = () => {
   });
 };
 
-let handleGetExamById = (id) => {
+let handleGetExamById = (id, password) => {
   return new Promise(async (resolve, reject) => {
     let data = {};
+    // console.log(typeof password);
     const examData = await db.Exam.findAll({
       where: {
         id: id,
@@ -53,21 +54,27 @@ let handleGetExamById = (id) => {
     });
     let rawData = JSON.parse(JSON.stringify(examData, null, 2));
 
-    console.log(rawData);
-    let password = "lorem";
-
-    console.log(rawData[0].author);
-    if (rawData[0].password !== null) {
-      if (password !== rawData[0].password) {
+    // console.log(typeof rawData[0].password);
+    if (rawData[0].password) {
+      if (JSON.stringify(password) !== JSON.stringify(rawData[0].password)) {
         resolve({
           statusCode: 401,
           code: 3,
           message: "Wrong password",
         });
+      } else if (rawData.length === 0) {
+        data.statusCode = 401;
+        data.code = 2;
+        data.message = "The exam with provided id does not exist";
+        resolve(data);
+      } else {
+        data.statusCode = 200;
+        data.code = 0;
+        data.message = "OK";
+        data.exams = rawData;
+        resolve(data);
       }
-    }
-
-    if (rawData.length === 0) {
+    } else if (rawData.length === 0) {
       data.statusCode = 401;
       data.code = 2;
       data.message = "The exam with provided id does not exist";
