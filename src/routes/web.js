@@ -3,12 +3,15 @@ import authMiddleware from "../middlewares/authMiddleware";
 import userController from "../controllers/userController";
 import examController from "../controllers/examController";
 import questionController from "../controllers/questionController";
+import imageUploadRoutes from "../controllers/imageUploadController";
 let router = express.Router();
 
 let initRoutes = (app) => {
   /*
     Related to login
   */
+
+  app.use("/api/upload", imageUploadRoutes);
   router.post("/login/username", userController.handleUserLogin);
   router.post("/login/email", userController.handleUserLoginViaEmail);
 
