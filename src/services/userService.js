@@ -58,7 +58,7 @@ let handleLogin = (user_name, user_password) => {
             },
             process.env.JWT_SECRET,
             {
-              expiresIn: 86400, // expires in 24 hours
+              expiresIn: 864000, // expires in 24 hours
             }
           );
           data.code = 0;
@@ -135,7 +135,7 @@ let handleLoginViaEmail = (email, user_password) => {
             },
             process.env.JWT_SECRET,
             {
-              expiresIn: 86400, // expires in 24 hours
+              expiresIn: 864000, // expires in 24 hours
             }
           );
           data.code = 0;

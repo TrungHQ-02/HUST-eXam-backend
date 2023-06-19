@@ -45,37 +45,76 @@ let initRoutes = (app) => {
   //get all public exams
   router.get("/exams/public", examController.getAllPublicExams);
   // get exam by id
-  router.post("/exam/:id", examController.getExamById);
+  router.post(
+    "/exam/:id",
+    authMiddleware.verifyToken,
+    examController.getExamById
+  );
 
-  router.post("/exam", examController.createNewExam);
+  router.post(
+    "/exam",
+    authMiddleware.verifyToken,
+    examController.createNewExam
+  );
 
   // update exam
-  router.put("/exam/:id", examController.updateExam);
+  router.put(
+    "/exam/:id",
+    authMiddleware.verifyToken,
+    examController.updateExam
+  );
   // delete exam
-  router.delete("/exam/:id", examController.deleteExam);
+  router.delete(
+    "/exam/:id",
+    authMiddleware.verifyToken,
+    examController.deleteExam
+  );
 
   // submit
-  router.post("/exam/:id/submit", examController.submit);
+  router.post(
+    "/exam/:id/submit",
+    authMiddleware.verifyToken,
+    examController.submit
+  );
 
   // get exam result and answer list
-  router.get("/exam/:id/result", examController.getExamResult);
+  router.get(
+    "/exam/:id/result",
+    authMiddleware.verifyToken,
+    examController.getExamResult
+  );
 
   // Related to CRUD Question
-  router.post("/exam/:id/questions", questionController.addQuestionsToExam);
+  router.post(
+    "/exam/:id/questions",
+    authMiddleware.verifyToken,
+    questionController.addQuestionsToExam
+  );
   router.put(
     "/exam/:id/questions/:questionId",
+    authMiddleware.verifyToken,
     questionController.updateQuestion
   );
   router.delete(
     "/exam/:id/questions/:questionId",
+    authMiddleware.verifyToken,
     questionController.deleteQuestion
   );
 
-  router.get("/exam/result/:userId", examController.getAllExamsByUserId);
+  router.get(
+    "/exam/result/:userId",
+    authMiddleware.verifyToken,
+    examController.getAllExamsByUserId
+  );
 
-  router.get("/exams/:authorId", examController.getAllExamsByAuthorId);
+  router.get(
+    "/exams/:authorId",
+    authMiddleware.verifyToken,
+    examController.getAllExamsByAuthorId
+  );
   router.get(
     "/exams/:authorId/latest",
+    authMiddleware.verifyToken,
     examController.getAllExamsByAuthorIdLatest
   );
   return app.use("/api", router);

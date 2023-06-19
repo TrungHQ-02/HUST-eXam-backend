@@ -31,12 +31,8 @@ const verifyToken = (req, res, next) => {
       }
     }
     console.log("after decoding", decoded);
-    req.query.userId = decoded.id + "";
-    req.body.userId = decoded.id + "";
-    req.query.userEmail = decoded.email + "";
-    req.body.userEmail = decoded.email + "";
-    req.query.userName = decoded.user_name + "";
-    req.body.userName = decoded.user_name + "";
+    req.query.decoded_userId = decoded.id + "";
+    req.body.decoded_userId = decoded.id + "";
     next();
   });
 };

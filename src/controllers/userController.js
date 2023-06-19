@@ -78,7 +78,7 @@ let handleUserSignup = async (req, res) => {
 
 // GET USER INFO
 let getUserInfo = async (req, res) => {
-  let id = req.query.userId;
+  let id = req.query.decoded_userId;
   let requestedId = req.params.id;
   if (id !== requestedId) {
     return res.status(500).json({
