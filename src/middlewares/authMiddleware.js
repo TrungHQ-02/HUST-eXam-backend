@@ -30,7 +30,7 @@ const verifyToken = (req, res, next) => {
           .json({ code: "x003", message: "Unauthorized: Invalid token" });
       }
     }
-    console.log("after decoding", decoded);
+    // console.log("after decoding", decoded);
     req.query.decoded_userId = decoded.id + "";
     req.body.decoded_userId = decoded.id + "";
     next();

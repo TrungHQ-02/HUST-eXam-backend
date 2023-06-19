@@ -116,7 +116,13 @@ let handleUploadImage = (id, link) => {
       });
 
       if (question) {
-        question.image_link = link;
+        let links = question.image_link;
+        // console.log(links);
+
+        let link_array = question.image_link.split(",");
+        // console.log(link_array);
+        link_array.push(link);
+        question.image_link = link_array.join(",");
         await question.save();
         resolve({
           code: 0,
@@ -137,9 +143,47 @@ let handleUploadImage = (id, link) => {
     }
   });
 };
+let handleDeleteImage = (id, delete_link) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let question = await db.Question.findOne({
+        where: {
+          id: id,
+        },
+      });
+
+      console.log(id, delete_link);
+
+      if (question) {
+        let link_array = question.image_link.split(",");
+        // console.log(link_array);
+        let deleted_array = link_array.filter((link) => link !== delete_link);
+        // console.log("after delete", deleted_array);
+        question.image_link = deleted_array.join(",");
+        await question.save();
+        resolve({
+          code: 0,
+          statusCode: 200,
+          message: "Successfully deleted",
+        });
+      } else {
+        resolve({
+          code: 2,
+          statusCode: 400,
+          message: "Question not found",
+        });
+      }
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   handleAddQuestionToExam: handleAddQuestionToExam,
   handleUpdateQuestion: handleUpdateQuestion,
   handleDeleteQuestion: handleDeleteQuestion,
   handleUploadImage: handleUploadImage,
+  handleDeleteImage: handleDeleteImage,
 };

@@ -115,7 +115,8 @@ const examResultData = [
 const questionData = [
   {
     ExamId: 1,
-    image_link: "link_to_image_of_question",
+    image_link:
+      "link_to_image_of_question,link_to_image_of_question2,link_to_image_of_question3",
     quiz_question: "Đề bài",
     point: 1.5,
     quiz_type: "multiple_choice",

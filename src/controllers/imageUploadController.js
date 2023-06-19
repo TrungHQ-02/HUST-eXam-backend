@@ -63,6 +63,23 @@ router.post(
   }
 );
 
+router.delete(
+  "/upload/question/:questionId",
+  upload.single("filename"),
+  async (req, res) => {
+    try {
+      let questionId = req.params.questionId;
+      let image_link_to_delete = req.body.link;
+      let msg = await questionService.handleDeleteImage(
+        questionId,
+        image_link_to_delete
+      );
+      return res.status(msg.statusCode).json(msg);
+    } catch (error) {
+      return res.status(400).send(error.message);
+    }
+  }
+);
 const giveCurrentDateTime = () => {
   const today = new Date();
   const date =
