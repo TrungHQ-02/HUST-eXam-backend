@@ -363,6 +363,31 @@ let handleUpdateExam = (examId, data) => {
   });
 };
 
+let handleDeleteExam = (id) => {
+  return new Promise(async (resolve, reject) => {
+    let exam = await db.Exam.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (exam) {
+      await exam.destroy();
+      resolve({
+        code: 0,
+        statusCode: 200,
+        message: "Successfully deleted!",
+      });
+    } else {
+      resolve({
+        code: 2,
+        statusCode: 404,
+        message: "Exam does not exist",
+      });
+    }
+  });
+};
+
 module.exports = {
   handleGetAllExams: handleGetAllExams,
   handleGetAllPublicExams: handleGetAllPublicExams,
@@ -374,4 +399,5 @@ module.exports = {
     handleModifyMaxScoreAndNumberOfQuestions,
   handleGetExamResultsByUserId: handleGetExamResultsByUserId,
   handleUpdateExam: handleUpdateExam,
+  handleDeleteExam: handleDeleteExam,
 };

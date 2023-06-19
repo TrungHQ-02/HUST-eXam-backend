@@ -49,6 +49,8 @@ let initRoutes = (app) => {
 
   // update exam
   router.put("/exam/:id", examController.updateExam);
+  // delete exam
+  router.delete("/exam/:id", examController.deleteExam);
 
   // submit
   router.post("/exam/:id/submit", examController.submit);
