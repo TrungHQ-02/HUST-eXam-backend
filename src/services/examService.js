@@ -451,6 +451,29 @@ let handleGetAllExamsByAuthorIdLatest = (authorId) => {
   });
 };
 
+let handleGetExamResultsByExamId = (examId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let results = await db.ExamResult.findAll({
+        where: {
+          ExamId: examId,
+        },
+        raw: true,
+      });
+
+      // console.log(results);
+      resolve({
+        code: 0,
+        statusCode: 200,
+        message: "OK",
+        results: results,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   handleGetAllExams: handleGetAllExams,
   handleGetAllPublicExams: handleGetAllPublicExams,
@@ -465,4 +488,5 @@ module.exports = {
   handleDeleteExam: handleDeleteExam,
   handleGetAllExamsByAuthorId: handleGetAllExamsByAuthorId,
   handleGetAllExamsByAuthorIdLatest: handleGetAllExamsByAuthorIdLatest,
+  handleGetExamResultsByExamId: handleGetExamResultsByExamId,
 };

@@ -106,7 +106,7 @@ let initRoutes = (app) => {
     authMiddleware.verifyToken,
     examController.getAllExamsByUserId
   );
-
+  ``;
   router.get(
     "/exams/:authorId",
     authMiddleware.verifyToken,
@@ -116,6 +116,12 @@ let initRoutes = (app) => {
     "/exams/:authorId/latest",
     authMiddleware.verifyToken,
     examController.getAllExamsByAuthorIdLatest
+  );
+
+  router.get(
+    "/exam/results/:examId",
+    authMiddleware.verifyToken,
+    examController.getExamResults
   );
   return app.use("/api", router);
 };
