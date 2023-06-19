@@ -70,6 +70,12 @@ let initRoutes = (app) => {
   );
 
   router.get("/exam/result/:userId", examController.getAllExamsByUserId);
+
+  router.get("/exams/:authorId", examController.getAllExamsByAuthorId);
+  router.get(
+    "/exams/:authorId/latest",
+    examController.getAllExamsByAuthorIdLatest
+  );
   return app.use("/api", router);
 };
 

@@ -387,6 +387,53 @@ let handleDeleteExam = (id) => {
   });
 };
 
+let handleGetAllExamsByAuthorId = (authorId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const data = await db.Exam.findAll({
+        where: {
+          author: authorId,
+        },
+        raw: true,
+      });
+
+      // console.log(data);
+      resolve({
+        code: 0,
+        statusCode: 200,
+        message: "OK",
+        exams: data,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+let handleGetAllExamsByAuthorIdLatest = (authorId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const data = await db.Exam.findOne({
+        where: {
+          author: authorId,
+        },
+        raw: true,
+        order: [["createdAt", "DESC"]],
+      });
+
+      // console.log(data);
+      resolve({
+        code: 0,
+        statusCode: 200,
+        message: "OK",
+        exams: data,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   handleGetAllExams: handleGetAllExams,
   handleGetAllPublicExams: handleGetAllPublicExams,
@@ -399,4 +446,6 @@ module.exports = {
   handleGetExamResultsByUserId: handleGetExamResultsByUserId,
   handleUpdateExam: handleUpdateExam,
   handleDeleteExam: handleDeleteExam,
+  handleGetAllExamsByAuthorId: handleGetAllExamsByAuthorId,
+  handleGetAllExamsByAuthorIdLatest: handleGetAllExamsByAuthorIdLatest,
 };

@@ -93,6 +93,17 @@ let deleteExam = async (req, res) => {
   return res.status(msg.statusCode).json(msg);
 };
 
+let getAllExamsByAuthorId = async (req, res) => {
+  let authorId = req.params.authorId;
+  let msg = await examService.handleGetAllExamsByAuthorId(authorId);
+  return res.status(msg.statusCode).json(msg);
+};
+let getAllExamsByAuthorIdLatest = async (req, res) => {
+  let authorId = req.params.authorId;
+  let msg = await examService.handleGetAllExamsByAuthorIdLatest(authorId);
+  return res.status(msg.statusCode).json(msg);
+};
+
 module.exports = {
   getAllExamsByUserId: getAllExamsByUserId,
   getAllExams: getAllExams,
@@ -103,4 +114,6 @@ module.exports = {
   getExamResult: getExamResult,
   updateExam: updateExam,
   deleteExam: deleteExam,
+  getAllExamsByAuthorId: getAllExamsByAuthorId,
+  getAllExamsByAuthorIdLatest: getAllExamsByAuthorIdLatest,
 };
