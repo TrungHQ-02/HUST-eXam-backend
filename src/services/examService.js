@@ -131,67 +131,66 @@ let handleSubmit = (examId, data) => {
         statusCode: 400,
         message: "This exam has been closed",
       });
-    }
-
-    if (keyData[0].is_open === false) {
+    } else if (keyData[0].is_open === false) {
       resolve({
         code: 3,
         statusCode: 400,
         message: "This exam has been closed",
       });
-    }
-
-    let keyList = keyData[0].Questions;
-    let answerList = data.answers;
-    let res = 0;
-    for (let i = 0; i < answerList.length; i++) {
-      let quesId = answerList[i].question_id;
-      // get key list of that question
-      let keys = getKeyListById(quesId, keyList);
-      let point = getPointById(quesId, keyList);
-      if (
-        JSON.stringify(keys) === JSON.stringify(answerList[i].selected_options)
-      ) {
-        res += point;
-      } else {
-        res += 0;
-      }
-    }
-
-    // check if user had submitted that test before
-    let submitted = await db.ExamResult.findAll({
-      where: {
-        ExamId: examId,
-        UserId: data.user_id,
-      },
-      raw: true,
-    });
-
-    if (submitted.length === 1) {
-      resolve({
-        code: 2,
-        statusCode: 400,
-        message: "You have submitted to this exam before",
-      });
     } else {
-      try {
-        await db.ExamResult.create({
-          state: "completed",
-          score: res,
-          complete_time: data.complete_time
-            ? data.complete_time
-            : keyData[0].duration, // in second
+      let keyList = keyData[0].Questions;
+      let answerList = data.answers;
+      let res = 0;
+      for (let i = 0; i < answerList.length; i++) {
+        let quesId = answerList[i].question_id;
+        // get key list of that question
+        let keys = getKeyListById(quesId, keyList);
+        let point = getPointById(quesId, keyList);
+        if (
+          JSON.stringify(keys.sort()) ===
+          JSON.stringify(answerList[i].selected_options.sort())
+        ) {
+          res += point;
+        } else {
+          res += 0;
+        }
+      }
+
+      // check if user had submitted that test before
+      let submitted = await db.ExamResult.findAll({
+        where: {
           ExamId: examId,
           UserId: data.user_id,
-        });
+        },
+        raw: true,
+      });
 
+      if (submitted.length === 1) {
         resolve({
-          code: 0,
-          statusCode: 200,
-          message: "Successfully submitted!",
+          code: 2,
+          statusCode: 400,
+          message: "You have submitted to this exam before",
         });
-      } catch (error) {
-        reject(error);
+      } else {
+        try {
+          await db.ExamResult.create({
+            state: "completed",
+            score: res,
+            complete_time: data.complete_time
+              ? data.complete_time
+              : keyData[0].duration, // in second
+            ExamId: examId,
+            UserId: data.user_id,
+          });
+
+          resolve({
+            code: 0,
+            statusCode: 200,
+            message: "Successfully submitted!",
+          });
+        } catch (error) {
+          reject(error);
+        }
       }
     }
   });
