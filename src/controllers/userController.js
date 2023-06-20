@@ -127,6 +127,7 @@ let updateUserInfo = async (req, res) => {
     // console.log(data);
 
     let userData = await userService.handelUpdateUserInfo(data);
+    // console.log(data);
     return res.status(200).json({
       code: userData.code,
       message: userData.message,

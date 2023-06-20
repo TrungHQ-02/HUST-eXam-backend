@@ -235,7 +235,7 @@ let handleGetUserInfo = (id) => {
 
 let handelUpdateUserInfo = (data) => {
   return new Promise(async (resolve, reject) => {
-    let id = data.userId;
+    let id = data.decoded_userId;
     // console.log("hello from service", data);
     let user = await db.User.findOne({
       where: {
