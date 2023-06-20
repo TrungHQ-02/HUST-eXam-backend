@@ -78,7 +78,7 @@ let initRoutes = (app) => {
   );
 
   // get exam result and answer list
-  router.get(
+  router.post(
     "/exam/:id/result",
     authMiddleware.verifyToken,
     examController.getExamResult
