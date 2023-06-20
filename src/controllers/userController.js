@@ -103,10 +103,8 @@ let getUserInfo = async (req, res) => {
 };
 
 let updateUserInfo = async (req, res) => {
-  let id = req.body.userId;
-  // console.log(id);
+  let id = req.query.decoded_userId;
   let requestedId = req.params.id;
-  // console.log(req.params, requestedId, typeof requestedId, typeof id);
   if (id !== requestedId) {
     return res.status(500).json({
       code: 3,
@@ -138,10 +136,8 @@ let updateUserInfo = async (req, res) => {
 };
 
 let deleteUser = async (req, res) => {
-  let id = req.body.userId;
-  // console.log(id);
+  let id = req.query.decoded_userId;
   let requestedId = req.params.id;
-  console.log(req.params, requestedId, typeof requestedId, typeof id);
   if (id !== requestedId) {
     return res.status(500).json({
       code: 3,
