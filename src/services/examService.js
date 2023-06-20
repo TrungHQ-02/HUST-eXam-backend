@@ -249,6 +249,7 @@ let handleGetExamResult = (examId, userId) => {
         let keyArray = keyList.map(function (item) {
           return {
             questionId: item.id,
+            answerList: JSON.parse(item.answer_list),
             keys: JSON.parse(item.key_list),
           };
         });
